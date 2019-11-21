@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-
+from copy import deepcopy
 from datetime import datetime
+
+from scrapy.conf import settings
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import Rule
 from news_all.spider_models import NewsRCSpider
@@ -9,6 +11,7 @@ from news_all.spider_models import NewsRCSpider
 class ceweeklySpider(NewsRCSpider):
     """中国经济周刊"""
     name = 'ceweekly'
+
     mystart_urls = {
         'http://www.ceweekly.cn/': 560,  # '首页'
         'http://www.ceweekly.cn/news/comment/': 561,  # 时评
@@ -35,14 +38,17 @@ class ceweeklySpider(NewsRCSpider):
                   callback='parse_item',
                   follow=False),
              )
-    
+
     def parse_item(self, response):
+        if response.url == 'http://www.ceweekly.cn/2019/1107/274258.shtml':
+            print("HERE")
         xp = response.xpath
         try:
             pubtime = xp('//span[@class="date"]/text()')[0].extract()
             title = xp('//h1[@class="article-title"]/text()')[0].extract().strip()
             content_div = xp('//div[@class="article-content fontSizeSmall BSHARE_POP"]')[0]
             origin_name = xp("//span[@class='source']/text()").extract_first('')
+            origin_name = "".join(origin_name.split())
             content, media, videos, cover = self.content_clean(content_div, need_video=True, kill_xpaths=[])
         except BaseException:
             return self.produce_debugitem(response, "xpath error")

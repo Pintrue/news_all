@@ -25,12 +25,14 @@ class chnfundSpider(NewsRCSpider):
             title = response.xpath('//h2[@class="article-title"]/text()')[0].extract().strip()
             content_div = response.xpath('//div[@class="article-content"]')[0]
             pubtime = response.xpath('//span[@class="publish-time"]/text()').extract_first("")
+            try:
+                source_re = response.xpath('//span[@class="article-source"]/text()')[0].extract().strip()
+            except IndexError as _:
+                source_re = response.xpath("/html/head/meta[@name='author']/@content").extract()[0]
+            origin_name = source_re if source_re else ''
+            content, media, videos, cover = self.content_clean(content_div, kill_xpaths=[])
         except:
             return self.produce_debugitem(response, "xpath error")
-
-        source_re = response.xpath('//span[@class="article-source"]/text()')[0].extract().strip()
-        origin_name = source_re if source_re else ''
-        content, media, videos, cover = self.content_clean(content_div, kill_xpaths=[])
 
         return self.produce_item(
             response=response,

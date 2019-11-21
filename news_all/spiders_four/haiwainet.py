@@ -294,9 +294,9 @@ class HaiWaiNetSpider(NewsRCSpider):
                            # http://v.haiwainet.cn/n/2019/0425/c346113-31544732.html
                            deny=r'v.haiwainet.cn/'),  # 排除视频
              callback='parse_item', follow=False),
-        Rule(LinkExtractor(allow=(r'haiwainet.cn.*?\d{6,}.html',),
-                           deny=(r'v.haiwainet.cn/', r'/201[0-8]', r'/20190[1-9]/')),
-             process_request=otherurl_meta, follow=False),
+        # Rule(LinkExtractor(allow=(r'haiwainet.cn.*?\d{6,}.html',),
+        #                    deny=(r'v.haiwainet.cn/', r'/201[0-8]', r'/2019/*(?:0[1-9]|10)/*')),
+        #      process_request=otherurl_meta, follow=False),
     )
     
     def parse_item(self, response):

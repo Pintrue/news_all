@@ -21,7 +21,8 @@ class peopleweeklySpider(NewsRCSpider):
 
     def parse_item(self, response):
         try:
-            title = response.xpath('//h1[@class="zhengbiaoti"]/text()')[0].extract().strip()
+            # title = response.xpath('//h1[@class="zhengbiaoti"]/text()')[0].extract().strip()
+            title = response.xpath('//h1/text()')[0].extract().strip()
             try:
                 sub_title = response.xpath('//p[@class="fubiaoti"]/text()')[0].extract().strip()
                 if sub_title:
@@ -33,14 +34,18 @@ class peopleweeklySpider(NewsRCSpider):
                 pass
 
             content_div = response.xpath('//div[@class="content"]')[0]
-            head_div = response.xpath('//div[@class="rexw-ly"]/p')[0]
+            # head_div = response.xpath('//div[@class="rexw-ly"]/p')[0]
+            head_div = response.xpath('//div[contains(@class,"rexw-ly")]/p')[0]
             time_re = head_div.re(r'\d{2,4}-\d{1,2}-\d{1,2}\s\d{1,2}\:\d{1,2}\:\d{1,2}')
             pubtime = time_re[0] if time_re else ''
+            # origin_name = response.xpath('//div[@class="rexw-ly"]/p/span/text()').extract_first('')
+            origin_name = head_div.xpath('.//span/text()').extract()
+            origin_name = '' if len(origin_name) <= 0 else origin_name[0]
+
+            content, media, videos, cover = self.content_clean(content_div, kill_xpaths=[])
         except:
             return self.produce_debugitem(response, "xpath error")
 
-        origin_name = response.xpath('//div[@class="rexw-ly"]/p/span/text()').extract_first('')
-        content, media, videos, cover = self.content_clean(content_div, kill_xpaths=[])
 
         return self.produce_item(
             response=response,
