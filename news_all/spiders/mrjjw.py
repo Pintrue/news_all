@@ -11,25 +11,25 @@ class PeopleSpider(NewsRCSpider):
     name = 'mrjjw'
 
     mystart_urls = {
-        'http://www.mrjjxw.com/': 6433,
-		'http://www.mrjjxw.com/mrjjxw/ui_columns/company': 6434,
-		'http://www.mrjjxw.com/mrjjxw/ui_columns/video': 6435,
-		'http://www.mrjjxw.com/mrjjxw/ui_columns/new_economy': 6436,
-		'http://www.mrjjxw.com/mrjjxw/ui_columns/realty': 6437,
-		'http://www.mrjjxw.com/mrjjxw/ui_columns/auto': 6438,
-		'http://www.mrjjxw.com/mrjjxw/ui_columns/city': 6439,
-		'http://www.mrjjxw.com/mrjjxw/ui_columns/digit': 6440,
-		'http://www.mrjjxw.com/mrjjxw/ui_columns/popular': 6441,
+            'http://www.mrjjxw.com/': 6433,  # 每日经济网
+            'http://www.mrjjxw.com/mrjjxw/ui_columns/company': 6434,  # 每日经济网
+            'http://www.mrjjxw.com/mrjjxw/ui_columns/video': 6435,  # 每日经济网
+            'http://www.mrjjxw.com/mrjjxw/ui_columns/new_economy': 6436,  # 每日经济网
+            'http://www.mrjjxw.com/mrjjxw/ui_columns/realty': 6437,  # 每日经济网
+            'http://www.mrjjxw.com/mrjjxw/ui_columns/auto': 6438,  # 每日经济网
+            'http://www.mrjjxw.com/mrjjxw/ui_columns/city': 6439,  # 每日经济网
+            'http://www.mrjjxw.com/mrjjxw/ui_columns/digit': 6440,  # 每日经济网
+            'http://www.mrjjxw.com/mrjjxw/ui_columns/popular': 6441,  # 每日经济网
     }
 
-	# http://www.mrjjxw.com/articles/2019-10-23/1380626.html
+    # http://www.mrjjxw.com/articles/2019-10-23/1380626.html
     # http://www.mrjjxw.com/articles/2019-10-22/1380468.html
 
     rules = (
         Rule(LinkExtractor(allow=r'.mrjjxw.com/articles/%s-\d{2}/\d+\.html' % datetime.today().strftime('%Y-%m'),
                            ),
              callback='parse_item', follow=False),
-        Rule(LinkExtractor(allow=(r'.mrjjxw.com/.*\.html',)
+        Rule(LinkExtractor(allow=r'.mrjjxw.com/.*\.html', deny=(r'201[0-8]', r'2019-0[1-9]', r'2019-1[0]')
                            ),
              process_request=otherurl_meta, follow=False),
     )
