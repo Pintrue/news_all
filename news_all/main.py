@@ -7,7 +7,7 @@
 from scrapy import cmdline
 
 
-cmd = 'scrapy crawl tibetcn'
+cmd = 'scrapy crawl ceweekly'
 
 
 cmdline.execute(cmd.split())
