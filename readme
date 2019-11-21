@@ -1,0 +1,15 @@
+## 精品爬虫
+
+# 需求
+新闻抓取
+
+# 分支说明
+## master 上线分支, 最新功能, 不要push
+## v3.0.1 8月1日之后不再维护
+## v3.0.2 上线临时分支, 在调度服务器上线之前, 读mongo source取不到meta就在内存中source_id_start_req_dict.pop(source_id),
+此分支上线之前清空redis的start_url
+## v3.0.3  调度版, 获取source表有spider_name字段且enabled=1的source_id:
+## v3.0.4  基于source_id自更新量统计, 每间隔8小时根据spider.source_id_meta_dict查询mongo库来同步打标信息
+## v4.0.1  配置解析版本
+
+# 更新计划
